@@ -32,6 +32,8 @@ const successMessages: Record<string, string> = {
 
 type LoginMode = "password" | "mail" | "totp";
 
+const glassCardClasses = "rounded-2xl border border-border/40 bg-background/80 backdrop-blur-sm shadow-2xl shadow-black/5";
+
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string; sent?: string }> }) {
   const session = await getAdminSession();
   if (session) redirect(appUrl("/admin"));
@@ -59,7 +61,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const multipleModes = modes.length > 1;
   const backgroundStyle = loginBg
     ? {
-        backgroundImage: `linear-gradient(rgba(20, 20, 29, 0) 0%, rgba(20, 20, 29, 0.55) 100%), url('${loginBg.replace(/'/g, "%27")}')`,
+        backgroundImage: `linear-gradient(rgba(20, 20, 29, 0.7) 0%, rgba(20, 20, 29, 0.9) 100%), url('${loginBg.replace(/'/g, "%27")}')`,
         backgroundSize: "cover",
         backgroundPosition: "center center",
         clipPath: "polygon(0px 0px, 100% 0px, 88% 100%, 0% 100%)",
@@ -68,7 +70,11 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
 
   return (
     <main className="relative min-h-svh bg-background">
-      <div className="absolute inset-0 -z-10 rounded-br-[1.5rem] rounded-r-[2rem] overflow-hidden" style={backgroundStyle} />
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-48 -right-48 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/20 via-pink-500/10 to-transparent blur-3xl" />
+        <div className="absolute -bottom-48 -left-48 h-96 w-96 rounded-full bg-gradient-to-br from-blue-500/20 via-cyan-500/10 to-transparent blur-3xl" />
+        <div className="absolute inset-0 rounded-br-[1.5rem] rounded-r-[2rem] overflow-hidden" style={backgroundStyle} />
+      </div>
       <UrlToast
         successParam={["sent", "success"]}
         successMessages={successMessages}
@@ -83,7 +89,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             Next 易支付
           </LoadingLink>
           <div className="max-w-md pb-8">
-            <h1 className="text-2xl font-semibold">统一管理订单、通道与系统配置</h1>
+            <h1 className="text-2xl font-semibold text-foreground">统一管理订单、通道与系统配置</h1>
             <p className="mt-2 text-sm text-muted-foreground">仅供授权管理员访问，用于处理收款订单、支付通道、通知回调和安全登录配置。</p>
           </div>
         </div>
@@ -91,13 +97,13 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         <div className="flex items-center justify-center p-6">
           <div className="w-full max-w-sm">
             <div className="mb-8">
-              <h1 className="text-2xl font-semibold">管理员登录</h1>
+              <h1 className="text-2xl font-semibold text-foreground">管理员登录</h1>
               <p className="mt-1 text-sm text-muted-foreground">输入凭证进入后台控制台</p>
             </div>
 
             <div>
               {multipleModes ? (
-                <div className="rounded-2xl border bg-background/70 px-6 py-5 shadow-sm backdrop-blur-sm">
+                <div className={glassCardClasses}>
                   <Tabs defaultValue={defaultMode}>
                     <TabsList className="mb-4 grid w-full" style={{ gridTemplateColumns: `repeat(${modes.length}, minmax(0, 1fr))` }}>
                       {modes.includes("password") ? (
@@ -138,15 +144,15 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
                   </Tabs>
                 </div>
               ) : defaultMode === "mail" ? (
-                <div className="rounded-2xl border bg-background/70 px-6 py-5 shadow-sm backdrop-blur-sm">
+                <div className={glassCardClasses}>
                   <MailLoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled && !mailOnly} />
                 </div>
               ) : defaultMode === "totp" ? (
-                <div className="rounded-2xl border bg-background/70 px-6 py-5 shadow-sm backdrop-blur-sm">
+                <div className={glassCardClasses}>
                   <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="totp" />
                 </div>
               ) : (
-                <div className="rounded-2xl border bg-background/70 px-6 py-5 shadow-sm backdrop-blur-sm">
+                <div className={glassCardClasses}>
                   <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="password" />
                 </div>
               )}

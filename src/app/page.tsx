@@ -11,17 +11,17 @@ export default function Home() {
   return (
     <PublicShell>
       <section className="relative isolate h-full w-full overflow-hidden px-4 py-5 md:px-8 lg:px-12">
-        <div className="absolute -top-48 -right-48 size-96 rounded-full bg-radial-from-secondary/30 blur-3xl" />
-        <div className="absolute -bottom-48 -left-48 size-96 rounded-full bg-radial-from-secondary/30 blur-3xl" />
-        <div className="absolute end-[-1400px] bottom-[-800px] hidden size-[1200px] rotate-[-15deg] rounded-full bg-radial-from-secondary/20 blur-3xl md:block" />
+        <div className="pointer-events-none absolute -top-32 -right-32 h-80 w-80 rounded-full bg-gradient-to-br from-violet-500/15 via-purple-500/8 to-transparent blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-gradient-to-br from-cyan-500/15 via-blue-500/8 to-transparent blur-3xl" />
+        <div className="pointer-events-none absolute start-[30%] top-[10%] hidden h-[500px] w-[500px] rounded-full bg-gradient-to-br from-pink-500/5 via-violet-500/5 to-transparent blur-3xl lg:block" />
 
         <div className="grid h-full w-full items-center gap-5 lg:grid-cols-[1.03fr_.97fr]">
           <div className="flex min-h-0 flex-col justify-center text-center lg:text-left">
-            <Badge variant="secondary" className="mx-auto w-fit rounded-full px-4 py-1.5 lg:mx-0">
+            <Badge variant="secondary" className="mx-auto w-fit rounded-full border border-border/40 bg-background/60 px-4 py-1.5 backdrop-blur-sm lg:mx-0">
               <Sparkles className="mr-1 size-3.5 text-primary" />
               Next.js · MySQL · 单商户易支付
             </Badge>
-            <h1 className="mx-auto mt-5 max-w-4xl bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-3xl font-semibold text-transparent md:text-4xl lg:mx-0 xl:text-5xl">
+            <h1 className="mx-auto mt-5 max-w-4xl bg-gradient-to-r from-foreground via-foreground to-muted-foreground bg-clip-text text-3xl font-semibold text-transparent md:text-4xl lg:mx-0 xl:text-5xl">
               轻盈、克制、可自托管的收款系统
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-sm text-muted-foreground md:text-base lg:mx-0 xl:text-lg">
@@ -39,32 +39,32 @@ export default function Home() {
 
             <div className="mt-7 flex flex-wrap justify-center gap-2 text-xs text-muted-foreground lg:justify-start">
               {features.map((item) => (
-                <span key={item} className="rounded-full border px-3 py-1">{item}</span>
+                <span key={item} className="rounded-full border border-border/40 bg-background/40 px-3 py-1 backdrop-blur-sm">{item}</span>
               ))}
             </div>
           </div>
 
           <div className="mx-auto w-full max-w-2xl lg:mx-0">
-            <div className="rounded-2xl border bg-background/70 backdrop-blur-sm p-4 md:p-5 shadow-sm">
-              <div className="rounded-xl border bg-background/80 backdrop-blur-sm p-4 shadow-sm">
+            <div className="rounded-3xl border border-border/30 bg-background/70 backdrop-blur-sm p-4 shadow-2xl shadow-black/5 md:p-5">
+              <div className="rounded-2xl border border-border/40 bg-background/80 backdrop-blur-sm p-4 shadow-sm md:p-5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-xs text-primary">Payment Terminal</p>
                     <h2 className="mt-2 text-2xl font-semibold">桌面收款终端</h2>
                     <p className="mt-2 text-sm text-muted-foreground">扫码、跳转、回调通知集中处理。</p>
                   </div>
-                  <span className="grid size-12 place-items-center rounded-2xl bg-background/60 text-primary">
+                  <span className="grid size-12 place-items-center rounded-2xl border border-border/30 bg-background/60 text-primary shadow-sm">
                     <WalletCards className="size-6" />
                   </span>
                 </div>
 
-                <div className="mt-6 rounded-xl border bg-background/60 backdrop-blur-sm p-4 shadow-sm">
+                <div className="mt-6 rounded-2xl border border-border/40 bg-background/60 backdrop-blur-sm p-4 shadow-sm">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="text-sm text-muted-foreground">测试订单</div>
                       <div className="mt-1 text-4xl font-semibold">¥ 0.01</div>
                     </div>
-                    <div className="grid size-16 place-items-center rounded-2xl border bg-background backdrop-blur-sm">
+                    <div className="grid size-16 place-items-center rounded-2xl border border-border/30 bg-background backdrop-blur-sm shadow-sm">
                       <QrCode className="size-8 text-primary" />
                     </div>
                   </div>
@@ -93,8 +93,8 @@ export default function Home() {
 
 function HomePayCard({ code, title, text }: { code: "alipay" | "wxpay"; title: string; text: string }) {
   return (
-    <div className="group rounded-2xl border border-border/60 bg-background/70 backdrop-blur-sm p-4 text-left shadow-sm hover:-translate-y-1 transition-transform duration-300">
-      <div className="relative overflow-hidden rounded-xl border bg-background/80 backdrop-blur-sm p-4 shadow-sm">
+    <div className="group rounded-2xl border border-border/40 bg-background/70 backdrop-blur-sm p-4 text-left shadow-sm hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 transition-all duration-300">
+      <div className="relative overflow-hidden rounded-xl border border-border/30 bg-background/80 backdrop-blur-sm p-4 shadow-sm">
         <PaymentBrandIcon code={code} />
         <div className="mt-4 font-semibold">{title}</div>
         <div className="mt-1 text-xs text-muted-foreground">{text}</div>
@@ -105,8 +105,8 @@ function HomePayCard({ code, title, text }: { code: "alipay" | "wxpay"; title: s
 
 function FlowLine({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-border/60 bg-background/60 backdrop-blur-sm px-4 py-3 shadow-sm">
-      <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-background/60 text-primary [&_svg]:size-4">{icon}</div>
+    <div className="flex items-center gap-3 rounded-xl border border-border/40 bg-background/60 backdrop-blur-sm px-4 py-3 shadow-sm">
+      <div className="grid size-9 shrink-0 place-items-center rounded-xl border border-border/30 bg-background/60 text-primary shadow-sm [&_svg]:size-4">{icon}</div>
       <div className="min-w-0">
         <div className="truncate font-medium">{title}</div>
         <div className="mt-0.5 truncate text-xs text-muted-foreground">{text}</div>
