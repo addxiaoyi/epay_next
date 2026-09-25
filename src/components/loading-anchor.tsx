@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
@@ -11,11 +12,12 @@ type LoadingAnchorProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   showSpinner?: boolean;
 };
 
-export function LoadingAnchor({ children, className, onClick, loadingText, showSpinner = true, ...props }: LoadingAnchorProps) {
+export function LoadingAnchor({ children, className, onClick, loadingText, showSpinner = true, href, ...props }: LoadingAnchorProps) {
   const [pending, setPending] = useState(false);
 
   return (
-    <a
+    <Link
+      href={href as string}
       {...props}
       aria-busy={pending || undefined}
       data-pending={pending ? "true" : undefined}
@@ -29,6 +31,6 @@ export function LoadingAnchor({ children, className, onClick, loadingText, showS
     >
       {pending && showSpinner ? <LoaderCircle className="size-4 animate-spin" /> : null}
       {pending && loadingText ? loadingText : children}
-    </a>
+    </Link>
   );
 }

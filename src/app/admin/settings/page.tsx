@@ -26,7 +26,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
         </div>
       ) : null}
 
-      <form className="grid gap-6" method="post" action="/api/admin/settings">
+      <form className="grid gap-6" method="post" action="/pay/api/admin/settings">
         <Card className="overflow-hidden rounded-xl">
           <CardHeader className="border-b border-border/60 bg-muted/30 p-4">
             <CardTitle>基础配置</CardTitle>

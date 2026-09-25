@@ -167,7 +167,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
 
 function LoginForm({ captchaEnabled, totpEnabled, mode }: { captchaEnabled: boolean; totpEnabled: boolean; mode: "password" | "totp" }) {
   return (
-    <form className="grid gap-3" method="post" action="/api/admin/login">
+    <form className="grid gap-3" method="post" action="/pay/api/admin/login">
       <input type="hidden" name="mode" value={mode} />
       {mode === "password" ? (
         <>

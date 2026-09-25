@@ -27,7 +27,7 @@ export function MailLoginForm({ captchaEnabled, totpEnabled }: { captchaEnabled:
     if (disabled) return;
     setSending(true);
     try {
-      const response = await fetch("/api/admin/send-login-code", {
+      const response = await fetch("/pay/api/admin/send-login-code", {
         method: "POST",
         headers: { Accept: "application/json" },
       });
@@ -48,7 +48,7 @@ export function MailLoginForm({ captchaEnabled, totpEnabled }: { captchaEnabled:
   }
 
   return (
-    <form className="grid gap-3" method="post" action="/api/admin/login">
+    <form className="grid gap-3" method="post" action="/pay/api/admin/login">
       <input type="hidden" name="mode" value="mail" />
       <div className="grid gap-1.5">
         <Label htmlFor="email_code" className="text-xs">邮件验证码</Label>

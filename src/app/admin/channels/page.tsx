@@ -67,7 +67,7 @@ function ChannelForm({ channel }: { channel: ChannelRow }) {
         </div>
       </CardHeader>
       <CardContent className="p-4">
-        <form className="grid gap-4" method="post" action="/api/admin/channels">
+        <form className="grid gap-4" method="post" action="/pay/api/admin/channels">
           <input type="hidden" name="id" value={channel.id} />
           <div className="flex items-center gap-2">
             <input type="checkbox" name="enabled" defaultChecked={channel.enabled} className="h-4 w-4 rounded" />

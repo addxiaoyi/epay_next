@@ -46,7 +46,7 @@ export function OrderActionConfirm({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <form method="post" action="/api/admin/orders" className="space-y-4">
+        <form method="post" action="/pay/api/admin/orders" className="space-y-4">
           <input type="hidden" name="tradeNo" value={tradeNo} />
           <input type="hidden" name="action" value={action} />
           <div className="rounded-2xl border border-border/70 bg-muted/40 p-3 text-xs text-muted-foreground">

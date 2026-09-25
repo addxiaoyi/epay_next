@@ -170,7 +170,7 @@ function SidebarContent({
             <div className="mt-1 text-primary/70">订单与通道状态实时读取</div>
           </div>
         ) : null}
-        <form method="post" action="/api/admin/logout">
+        <form method="post" action="/pay/api/admin/logout">
           <Button type="submit" variant="ghost" className={cn("w-full gap-2 rounded-xl text-muted-foreground hover:bg-destructive/10 hover:text-destructive", collapsed ? "justify-center px-0" : "justify-start")}>
             <LogOut className="size-4" />
             {!collapsed ? "退出登录" : <span className="sr-only">退出登录</span>}
@@ -183,7 +183,7 @@ function SidebarContent({
 
 function AdminNavLink({ item, collapsed, onNavigate }: { item: NavItem; collapsed: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
-  const active = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(`${item.href}/`));
+  const active = pathname === `/pay${item.href}` || (item.href !== "/admin" && pathname.startsWith(`/pay${item.href}/`));
 
   return (
     <LoadingLink

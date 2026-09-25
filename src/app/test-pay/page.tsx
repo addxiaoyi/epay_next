@@ -54,7 +54,7 @@ export default async function TestPayPage({ searchParams }: { searchParams: Prom
                     </span>
                   </div>
 
-                  <form className="grid gap-3 sm:gap-4" method="post" action="/api/test-pay">
+                  <form className="grid gap-3 sm:gap-4" method="post" action="/pay/api/test-pay">
                     <div className="grid gap-1.5">
                       <Label htmlFor="name">商品名称</Label>
                       <Input id="name" name="name" defaultValue="测试商品" className="h-11 rounded-2xl" />

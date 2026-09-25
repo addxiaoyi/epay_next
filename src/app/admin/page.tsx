@@ -51,7 +51,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           </CardTitle>
         </CardHeader>
         <CardContent className="p-4">
-          <form method="post" action="/api/admin/settings" className="grid gap-4 rounded-xl border border-border/60 bg-muted/25 p-4 max-sm:max-w-full">
+          <form method="post" action="/pay/api/admin/settings" className="grid gap-4 rounded-xl border border-border/60 bg-muted/25 p-4 max-sm:max-w-full">
             <input type="hidden" name="merchant_key" value={apiKey} />
             <input type="hidden" name="redirect_to" value="/admin" />
             <div className="grid gap-2">

@@ -34,7 +34,7 @@ export function TotpSetupDialog({ enabled, secret }: { enabled: boolean; secret:
     }
     setPending(true);
     try {
-      const response = await fetch("/api/admin/totp/setup", { method: "GET" });
+      const response = await fetch("/pay/api/admin/totp/setup", { method: "GET" });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "生成 F2A 密钥失败");
       setSetup(data);
@@ -52,7 +52,7 @@ export function TotpSetupDialog({ enabled, secret }: { enabled: boolean; secret:
     if (!setup) return;
     setPending(true);
     try {
-      const response = await fetch("/api/admin/totp/setup", {
+      const response = await fetch("/pay/api/admin/totp/setup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ secret: setup.secret, code }),
