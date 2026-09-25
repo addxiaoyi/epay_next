@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { appUrl } from "@/lib/app-url";
+import { appUrl } from "./lib/app-url";
 
 export function proxy(request: NextRequest) {
   const url = request.nextUrl;
