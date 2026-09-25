@@ -1,19 +1,20 @@
 import type { NextConfig } from "next";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 const nextConfig: NextConfig = {
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
-  output: 'standalone',
-  trailingSlash: true,
+  basePath,
+  output: "standalone",
+  trailingSlash: false,
   async rewrites() {
-    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
     return [
       {
-        source: `${basePath}/pay/${process.env.PAY_TRADE_NO || ':tradeNo'}`,
-        destination: `/pay/${process.env.PAY_TRADE_NO || ':tradeNo'}`,
+        source: `${basePath}/pay/:tradeNo`,
+        destination: `/pay/:tradeNo`,
       },
       {
-        source: `${basePath}/cashier/${process.env.CASHIER_TRADE_NO || ':tradeNo'}`,
-        destination: `/cashier/${process.env.CASHIER_TRADE_NO || ':tradeNo'}`,
+        source: `${basePath}/cashier/:tradeNo`,
+        destination: `/cashier/:tradeNo`,
       },
       {
         source: `${basePath}/test-pay`,
@@ -24,12 +25,16 @@ const nextConfig: NextConfig = {
         destination: `/admin/login`,
       },
       {
-        source: `${basePath}/admin`,
-        destination: `/admin`,
+        source: `${basePath}/admin/:path*`,
+        destination: `/admin/:path*`,
       },
       {
         source: `${basePath}/api/:path*`,
         destination: `/api/:path*`,
+      },
+      {
+        source: `${basePath}/pay/start/:tradeNo`,
+        destination: `/pay/start/:tradeNo`,
       },
     ];
   },
