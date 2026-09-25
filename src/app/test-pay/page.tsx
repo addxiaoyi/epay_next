@@ -17,7 +17,8 @@ export default async function TestPayPage({ searchParams }: { searchParams: Prom
 
   return (
     <PublicShell>
-      <section className="h-full w-full overflow-hidden px-4 py-4 md:px-8 lg:px-12">
+      <section className="relative h-full w-full overflow-hidden px-4 py-4 md:px-8 lg:px-12">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.06),transparent_50%)]" />
         <UrlToast errorMessages={{ "1": "测试支付发起失败。" }} defaultError="测试支付发起失败。" />
 
         <div className="grid h-full w-full items-center gap-4 lg:grid-cols-[.86fr_1.14fr]">
@@ -40,9 +41,9 @@ export default async function TestPayPage({ searchParams }: { searchParams: Prom
           </div>
 
           <div className="mx-auto flex h-full w-full max-w-2xl items-center">
-            <Card className="washi-strong w-full rounded-2xl">
+            <Card className="washi-strong w-full rounded-2xl border border-border/30 bg-background/70 backdrop-blur-sm shadow-sm">
               <CardContent className="p-4 sm:p-5 md:p-6">
-                <div className="rounded-xl border border-border/60 bg-background p-4 sm:p-5">
+                <div className="rounded-xl border border-border/40 bg-background/60 backdrop-blur-sm p-4 sm:p-5 shadow-sm">
                   <div className="mb-4 flex items-center justify-between gap-4 sm:mb-5">
                     <div>
                       <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-primary sm:text-xs">Test Order</p>

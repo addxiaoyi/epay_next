@@ -29,7 +29,8 @@ export default async function CashierPage({ params }: { params: Promise<{ tradeN
   return (
     <PublicShell>
       <UrlToast errorMessages={{ default: "支付发起失败。" }} defaultError="支付发起失败。" />
-      <section className="h-full w-full overflow-hidden px-4 py-4 md:px-8 lg:px-12">
+      <section className="relative h-full w-full overflow-hidden px-4 py-4 md:px-8 lg:px-12">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.06),transparent_50%)]" />
         <div className="grid h-full w-full items-center gap-4 lg:grid-cols-[.92fr_1.08fr]">
           <div className="hidden min-h-0 flex-col justify-center text-center lg:flex lg:text-left">
             <Badge variant="secondary" className="w-fit rounded-full border border-border/60 bg-background px-4 py-1.5">
@@ -50,9 +51,9 @@ export default async function CashierPage({ params }: { params: Promise<{ tradeN
           </div>
 
           <div className="mx-auto flex h-full w-full max-w-2xl items-center">
-            <Card className="washi-strong w-full rounded-2xl">
+            <Card className="washi-strong w-full rounded-2xl border border-border/30 bg-background/70 backdrop-blur-sm shadow-sm">
               <CardContent className="p-4 sm:p-5 md:p-6">
-                <div className="rounded-xl border border-border/60 bg-background p-4 sm:p-5">
+                <div className="rounded-xl border border-border/40 bg-background/60 backdrop-blur-sm p-4 sm:p-5 shadow-sm">
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
                       <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-primary sm:text-xs">Order summary</p>

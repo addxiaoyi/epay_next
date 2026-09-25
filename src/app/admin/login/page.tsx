@@ -67,7 +67,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
     : undefined;
 
   return (
-    <main className="min-h-svh bg-background">
+    <main className="relative min-h-svh bg-background">
+      <div className="absolute inset-0 -z-10 rounded-br-[1.5rem] rounded-r-[2rem] overflow-hidden" style={backgroundStyle} />
       <UrlToast
         successParam={["sent", "success"]}
         successMessages={successMessages}
@@ -87,59 +88,67 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           </div>
         </div>
 
-        <div className="flex items-center justify-center p-4">
+        <div className="flex items-center justify-center p-6">
           <div className="w-full max-w-sm">
-            <div className="mb-3">
-              <h1 className="text-xl font-semibold">管理员登录</h1>
+            <div className="mb-8">
+              <h1 className="text-2xl font-semibold">管理员登录</h1>
               <p className="mt-1 text-sm text-muted-foreground">输入凭证进入后台控制台</p>
             </div>
 
             <div>
               {multipleModes ? (
-                <Tabs defaultValue={defaultMode}>
-                  <TabsList className="mb-4 grid w-full" style={{ gridTemplateColumns: `repeat(${modes.length}, minmax(0, 1fr))` }}>
+                <div className="rounded-2xl border bg-background/70 px-6 py-5 shadow-sm backdrop-blur-sm">
+                  <Tabs defaultValue={defaultMode}>
+                    <TabsList className="mb-4 grid w-full" style={{ gridTemplateColumns: `repeat(${modes.length}, minmax(0, 1fr))` }}>
+                      {modes.includes("password") ? (
+                        <TabsTrigger value="password">
+                          <KeyRound className="size-4" />
+                          密码登录
+                        </TabsTrigger>
+                      ) : null}
+                      {modes.includes("mail") ? (
+                        <TabsTrigger value="mail">
+                          <Mail className="size-4" />
+                          邮件登录
+                        </TabsTrigger>
+                      ) : null}
+                      {modes.includes("totp") ? (
+                        <TabsTrigger value="totp">
+                          <ShieldCheck className="size-4" />
+                          2FA
+                        </TabsTrigger>
+                      ) : null}
+                    </TabsList>
+
                     {modes.includes("password") ? (
-                      <TabsTrigger value="password">
-                        <KeyRound className="size-4" />
-                        密码登录
-                      </TabsTrigger>
+                      <TabsContent value="password">
+                        <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="password" />
+                      </TabsContent>
                     ) : null}
                     {modes.includes("mail") ? (
-                      <TabsTrigger value="mail">
-                        <Mail className="size-4" />
-                        邮件登录
-                      </TabsTrigger>
+                      <TabsContent value="mail">
+                        <MailLoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled && !mailOnly} />
+                      </TabsContent>
                     ) : null}
                     {modes.includes("totp") ? (
-                      <TabsTrigger value="totp">
-                        <ShieldCheck className="size-4" />
-                        2FA
-                      </TabsTrigger>
-                    ) : null}
-                  </TabsList>
-
-                  {modes.includes("password") ? (
-                    <TabsContent value="password">
-                      <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="password" />
-                    </TabsContent>
-                  ) : null}
-                  {modes.includes("mail") ? (
-                    <TabsContent value="mail">
-                      <MailLoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled && !mailOnly} />
-                    </TabsContent>
-                  ) : null}
-                  {modes.includes("totp") ? (
                       <TabsContent value="totp">
                         <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="totp" />
                       </TabsContent>
                     ) : null}
-                </Tabs>
+                  </Tabs>
+                </div>
               ) : defaultMode === "mail" ? (
-                <MailLoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled && !mailOnly} />
+                <div className="rounded-2xl border bg-background/70 px-6 py-5 shadow-sm backdrop-blur-sm">
+                  <MailLoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled && !mailOnly} />
+                </div>
               ) : defaultMode === "totp" ? (
-                <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="totp" />
+                <div className="rounded-2xl border bg-background/70 px-6 py-5 shadow-sm backdrop-blur-sm">
+                  <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="totp" />
+                </div>
               ) : (
-                <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="password" />
+                <div className="rounded-2xl border bg-background/70 px-6 py-5 shadow-sm backdrop-blur-sm">
+                  <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="password" />
+                </div>
               )}
               <p className="mt-3 text-center text-xs text-muted-foreground">登录即进入后台管理，仅用于系统管理员。</p>
             </div>

@@ -83,10 +83,10 @@ export function PaymentStatusPoller({
   return (
     <div
       className={cn(
-        "mt-3 rounded-2xl border p-3 text-left text-sm sm:mt-4",
-        paid && "border-emerald-200 bg-emerald-50 text-emerald-950",
+        "mt-3 rounded-2xl border p-3 text-left text-sm sm:mt-4 backdrop-blur-sm",
+        paid && "border-emerald-200 bg-emerald-50/80 text-emerald-950",
         closed && "border-destructive/20 bg-destructive/10 text-destructive",
-        !paid && !closed && "border-border bg-background text-foreground",
+        !paid && !closed && "border-border/40 bg-background/60 text-foreground",
       )}
     >
       <div className="flex items-start gap-3">

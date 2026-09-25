@@ -15,14 +15,14 @@ export function PaymentQr({ src, compact = false }: { src: string; compact?: boo
 
   return (
     <div className={cn("grid", compact ? "gap-2" : "gap-3")}>
-      <div className={cn("relative mx-auto rounded-2xl border bg-background shadow-sm", compact ? "p-2" : "p-4")}>
+      <div className={cn("relative mx-auto rounded-2xl border border-border/40 bg-background/70 backdrop-blur-sm shadow-sm", compact ? "p-2" : "p-4")}>
         {loading ? (
-          <div className="absolute inset-4 z-10 grid place-items-center rounded-xl bg-background/80">
+          <div className="absolute inset-4 z-10 grid place-items-center rounded-xl bg-background/70 backdrop-blur-sm">
             <LoaderCircle className="size-8 animate-spin text-muted-foreground" />
           </div>
         ) : null}
         {imageError ? (
-          <div className="absolute inset-4 z-20 grid place-items-center rounded-xl bg-background/90 p-6 text-center text-sm text-muted-foreground">
+          <div className="absolute inset-4 z-20 grid place-items-center rounded-xl bg-background/70 backdrop-blur-sm p-6 text-center text-sm text-muted-foreground">
             二维码加载失败，请刷新重试。
           </div>
         ) : null}

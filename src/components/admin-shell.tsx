@@ -54,7 +54,7 @@ export function AdminShell({
       <div className="pointer-events-none fixed inset-0 -z-10 bg-background" />
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-30 hidden border-r border-border/60 bg-background shadow-[18px_0_55px_-38px_color-mix(in_oklch,var(--foreground)_45%,transparent)] transition-[width] duration-300 lg:flex lg:flex-col",
+          "fixed inset-y-0 left-0 z-30 hidden border-r border-border/60 bg-background/80 backdrop-blur-sm shadow-[18px_0_55px_-38px_color-mix(in_oklch,var(--foreground)_45%,transparent)] transition-[width] duration-300 lg:flex lg:flex-col",
           collapsed ? "w-[76px]" : "w-[244px]"
         )}
       >
@@ -62,7 +62,7 @@ export function AdminShell({
       </aside>
 
       <div className={cn("min-w-0 transition-[padding] duration-300", collapsed ? "lg:pl-[76px]" : "lg:pl-[244px]")}>
-        <header className="sticky top-0 z-20 border-b border-border/60 bg-background">
+        <header className="sticky top-0 z-20 border-b border-border/60 bg-background/70 backdrop-blur-sm">
           <div className="flex h-16 min-w-0 items-center gap-3 px-4 md:px-6">
             <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileOpen(true)}>
               <Menu className="size-5" />
@@ -82,7 +82,7 @@ export function AdminShell({
               className={buttonVariants({
                 size: "sm",
                 variant: "outline",
-                className: "rounded-full bg-background",
+                className: "rounded-full bg-background/70 backdrop-blur-sm",
               })}
             >
               <ExternalLink className="size-4" />
@@ -92,7 +92,7 @@ export function AdminShell({
         </header>
 
         <main className="min-h-[calc(100svh-4rem)] min-w-0 px-3 py-4 sm:px-4 sm:py-5 md:px-6 lg:px-8">
-          <div className="mx-auto w-full max-w-7xl fade-up">
+          <div className="mx-auto w-full max-w-7xl">
             <div className="space-y-6">{children}</div>
           </div>
         </main>
@@ -100,8 +100,8 @@ export function AdminShell({
 
       {mobileOpen ? (
         <div className="fixed inset-0 z-40 lg:hidden">
-          <div className="absolute inset-0 bg-background/80" onClick={() => setMobileOpen(false)} />
-          <aside className="absolute inset-y-0 left-0 z-50 w-[244px] border-r border-border/60 bg-background shadow-xl">
+          <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <aside className="absolute inset-y-0 left-0 z-50 w-[244px] border-r border-border/60 bg-background/80 backdrop-blur-sm shadow-xl">
             <SidebarContent collapsed={false} mobile onNavigate={() => setMobileOpen(false)} />
           </aside>
         </div>
