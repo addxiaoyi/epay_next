@@ -9,17 +9,11 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
-  PanelLeftClose,
-  PanelLeftOpen,
-  RadioTower,
   ReceiptText,
   Settings,
-  Sparkles,
 } from "lucide-react";
 import { LoadingLink } from "@/components/loading-link";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 type NavItem = { href: string; label: string; icon: typeof LayoutDashboard };
@@ -35,7 +29,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
   {
     label: "业务配置",
     items: [
-      { href: "/admin/channels", label: "支付通道", icon: RadioTower },
+      { href: "/admin/channels", label: "支付通道", icon: CreditCard },
       { href: "/admin/settings", label: "系统设置", icon: Settings },
     ],
   },
@@ -57,27 +51,18 @@ export function AdminShell({
 
   return (
     <div className="relative min-h-svh overflow-hidden text-foreground paper-grain">
-      <div className="pointer-events-none fixed inset-0 -z-20 bg-background" />
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_16%_12%,color-mix(in_oklch,var(--primary)_28%,transparent),transparent_34%),radial-gradient(circle_at_84%_18%,color-mix(in_oklch,var(--accent)_22%,transparent),transparent_34%),radial-gradient(circle_at_54%_88%,color-mix(in_oklch,var(--secondary)_20%,transparent),transparent_40%)]" />
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-background/50" />
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-background" />
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-30 hidden border-r border-border/60 bg-background/62 shadow-[18px_0_55px_-38px_color-mix(in_oklch,var(--foreground)_45%,transparent)] backdrop-blur-xl transition-[width] duration-300 lg:flex lg:flex-col",
+          "fixed inset-y-0 left-0 z-30 hidden border-r border-border/60 bg-background shadow-[18px_0_55px_-38px_color-mix(in_oklch,var(--foreground)_45%,transparent)] transition-[width] duration-300 lg:flex lg:flex-col",
           collapsed ? "w-[76px]" : "w-[244px]"
         )}
       >
         <SidebarContent collapsed={collapsed} onCollapse={() => setCollapsed((value) => !value)} />
       </aside>
 
-      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="left" className="w-[300px] border-border/60 bg-background/85 p-0 backdrop-blur-xl">
-          <SheetTitle className="sr-only">后台导航</SheetTitle>
-          <SidebarContent collapsed={false} mobile onNavigate={() => setMobileOpen(false)} />
-        </SheetContent>
-      </Sheet>
-
       <div className={cn("min-w-0 transition-[padding] duration-300", collapsed ? "lg:pl-[76px]" : "lg:pl-[244px]")}>
-        <header className="sticky top-0 z-20 border-b border-border/60 bg-background/62 backdrop-blur-xl supports-[backdrop-filter]:bg-background/54">
+        <header className="sticky top-0 z-20 border-b border-border/60 bg-background">
           <div className="flex h-16 min-w-0 items-center gap-3 px-4 md:px-6">
             <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileOpen(true)}>
               <Menu className="size-5" />
@@ -92,13 +77,12 @@ export function AdminShell({
               {description ? <p className="mt-1 truncate text-sm text-muted-foreground">{description}</p> : null}
             </div>
             {actions ? <div className="hidden items-center gap-2 md:flex">{actions}</div> : null}
-            <Separator orientation="vertical" className="hidden h-5 md:block" />
             <LoadingLink
               href="/"
               className={buttonVariants({
                 size: "sm",
                 variant: "outline",
-                className: "rounded-full bg-background/55",
+                className: "rounded-full bg-background",
               })}
             >
               <ExternalLink className="size-4" />
@@ -113,6 +97,15 @@ export function AdminShell({
           </div>
         </main>
       </div>
+
+      {mobileOpen ? (
+        <div className="fixed inset-0 z-40 lg:hidden">
+          <div className="absolute inset-0 bg-background/80" onClick={() => setMobileOpen(false)} />
+          <aside className="absolute inset-y-0 left-0 z-50 w-[244px] border-r border-border/60 bg-background shadow-xl">
+            <SidebarContent collapsed={false} mobile onNavigate={() => setMobileOpen(false)} />
+          </aside>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -130,16 +123,16 @@ function SidebarContent({
 }) {
   return (
     <>
-      <div className={cn("flex h-16 items-center gap-3 border-b border-border/60", collapsed ? "justify-center px-3" : "px-4")}>
+      <div className={cn("flex h-16 items-center border-b border-border/60", collapsed ? "justify-center px-3" : "px-4")}>
         {collapsed && !mobile ? (
           <Button variant="ghost" size="icon" onClick={onCollapse} className="rounded-xl">
-            <PanelLeftOpen className="size-4" />
+            <LayoutDashboard className="size-4" />
             <span className="sr-only">展开侧栏</span>
           </Button>
         ) : (
           <>
             <LoadingLink href="/admin" onClick={onNavigate} className="group flex min-w-0 items-center gap-3">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-transform group-hover:rotate-3">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
                 <CreditCard className="size-5" />
               </span>
               <span className="min-w-0">
@@ -149,7 +142,7 @@ function SidebarContent({
             </LoadingLink>
             {!mobile ? (
               <Button variant="ghost" size="icon" className="ml-auto rounded-xl" onClick={onCollapse}>
-                <PanelLeftClose className="size-4" />
+                <LogOut className="size-4" />
                 <span className="sr-only">收起侧栏</span>
               </Button>
             ) : null}
@@ -173,7 +166,7 @@ function SidebarContent({
       <div className="border-t border-border/60 p-3">
         {!collapsed ? (
           <div className="mb-2 rounded-2xl bg-primary/10 p-3 text-xs text-primary">
-            <div className="flex items-center gap-2 font-medium"><Sparkles className="size-3.5" />系统在线</div>
+            <div className="flex items-center gap-2 font-medium">系统在线</div>
             <div className="mt-1 text-primary/70">订单与通道状态实时读取</div>
           </div>
         ) : null}
@@ -207,7 +200,6 @@ function AdminNavLink({ item, collapsed, onNavigate }: { item: NavItem; collapse
       {active ? <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-primary" /> : null}
       <item.icon className="size-4 shrink-0" />
       {!collapsed ? <span className="truncate">{item.label}</span> : <span className="sr-only">{item.label}</span>}
-      {!collapsed && active ? <Sparkles className="ml-auto size-3 opacity-70" /> : null}
     </LoadingLink>
   );
 }

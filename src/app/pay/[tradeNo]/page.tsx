@@ -53,16 +53,14 @@ export default async function PayPage({ params }: { params: Promise<{ tradeNo: s
 
   return (
     <PublicShell>
-      <section className={`relative isolate h-full w-full overflow-hidden px-4 py-4 md:px-8 lg:px-12 ${theme.accent}`}>
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_18%,rgb(var(--pay-primary-rgb)/.22),transparent_35%),radial-gradient(circle_at_82%_18%,color-mix(in_oklch,var(--pay-secondary)_22%,transparent),transparent_34%),radial-gradient(circle_at_52%_92%,rgb(var(--pay-primary-rgb)/.12),transparent_40%)]" />
-
+      <section className={`h-full w-full overflow-hidden px-4 py-4 md:px-8 lg:px-12 ${theme.accent}`}>
         <div className="grid h-full w-full items-center gap-4 lg:grid-cols-[.86fr_1.14fr]">
-          <div className="fade-up hidden min-h-0 flex-col justify-center text-center lg:flex lg:text-left">
-            <Badge variant="secondary" className="w-fit rounded-full border border-border/60 bg-background/60 px-4 py-1.5 backdrop-blur">
+          <div className="hidden min-h-0 flex-col justify-center text-center lg:flex lg:text-left">
+            <Badge variant="secondary" className="w-fit rounded-full border border-border/60 bg-background px-4 py-1.5">
               <Sparkles className={`mr-1 size-3.5 ${theme.qrTone}`} />
               {theme.badge}
             </Badge>
-            <h1 className="mt-5 max-w-3xl text-5xl font-semibold leading-tight tracking-tight xl:text-6xl">
+            <h1 className="mt-5 max-w-3xl text-4xl font-semibold xl:text-5xl">
               <span className={theme.qrTone}>{theme.name}</span>
               <span className="block">扫码完成这笔收款</span>
             </h1>
@@ -75,28 +73,26 @@ export default async function PayPage({ params }: { params: Promise<{ tradeNo: s
             </div>
           </div>
 
-          <div className="relative mx-auto flex h-full w-full max-w-2xl items-center">
-            <div className="absolute -left-10 top-8 h-40 w-40 rounded-full bg-[rgb(var(--pay-primary-rgb)/.16)] blur-3xl" />
-            <div className="absolute -right-8 bottom-8 h-44 w-44 rounded-full bg-[rgb(var(--pay-primary-rgb)/.12)] blur-3xl" />
-            <Card className="washi-strong relative w-full overflow-hidden rounded-[2rem] ring-glow">
+          <div className="mx-auto flex h-full w-full max-w-2xl items-center">
+            <Card className="washi-strong w-full rounded-2xl">
               <CardContent className="p-3 sm:p-5 md:p-6">
-                <div className="rounded-[1.5rem] border border-border/60 bg-background/45 p-3 text-center backdrop-blur sm:p-5">
-                  <div className="flex items-center justify-between gap-3 text-left">
+                <div className="rounded-xl border border-border/60 bg-background p-3 sm:p-5">
+                  <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
                       <p className={`text-[10px] font-medium uppercase tracking-[0.24em] sm:text-xs ${theme.qrTone}`}>{theme.name} Amount</p>
-                      <div className="mt-1 text-4xl font-semibold tracking-tight sm:text-6xl">¥ {moneyToString(order.money)}</div>
+                      <div className="mt-1 text-4xl font-semibold sm:text-6xl">¥ {moneyToString(order.money)}</div>
                       <p className="mt-1 truncate text-xs text-muted-foreground sm:text-sm">{order.name}</p>
                     </div>
-                    <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-[var(--pay-primary)] text-white shadow-sm sm:size-14">
+                    <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-[var(--pay-primary)] text-white sm:size-14">
                       <QrCode className="size-6 sm:size-7" />
                     </div>
                   </div>
 
-                  <div className="mx-auto mt-3 w-fit rounded-[1.5rem] border border-border/70 bg-white/85 p-2 shadow-sm backdrop-blur sm:mt-5 sm:rounded-[2rem] sm:p-3">
+                  <div className="mx-auto mt-3 w-fit rounded-xl border border-border/70 bg-white/85 p-2 sm:mt-5 sm:p-3">
                     {qrDataUrl ? (
                       <PaymentQr src={qrDataUrl} compact />
                     ) : (
-                      <div className="grid size-[230px] place-items-center rounded-2xl border border-dashed border-border bg-background/70 p-5 text-center text-sm text-muted-foreground sm:size-[270px]">
+                      <div className="grid size-[230px] place-items-center rounded-2xl border border-dashed border-border bg-background p-5 text-center text-sm text-muted-foreground sm:size-[270px]">
                         当前订单没有真实的三方支付链接。请重新发起支付，或检查通道下单接口返回值。
                       </div>
                     )}
@@ -133,7 +129,7 @@ export default async function PayPage({ params }: { params: Promise<{ tradeNo: s
                       className={buttonVariants({
                         size: "sm",
                         variant: "outline",
-                        className: "rounded-full bg-background/60 sm:h-11",
+                        className: "rounded-full sm:h-11",
                       })}
                     >
                       <RefreshCw className="size-4" />

@@ -1,22 +1,101 @@
 import { ChannelProvider } from "@prisma/client";
 import { AdminShell } from "@/components/admin-shell";
-import { FormSwitch } from "@/components/form-switch";
-import { SubmitButton } from "@/components/submit-button";
-import { UrlToast } from "@/components/url-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
 
+type ChannelRow = {
+  id: number;
+  name: string;
+  provider: ChannelProvider;
+  enabled: boolean;
+  rate: unknown;
+  payMin: unknown;
+  payMax: unknown;
+  config: unknown;
+  code: string;
+  product: string;
+  typeId: number;
+  updatedAt: Date;
+  createdAt: Date;
+};
+
 export const dynamic = "force-dynamic";
 
-type ChannelConfig = Record<string, unknown>;
-type ChannelWithType = Awaited<ReturnType<typeof prisma.channel.findMany>>[number] & { type: { name: string; code: string } };
+export default async function ChannelsPage({ searchParams }: { searchParams: Promise<{ saved?: string }> }) {
+  await requireAdmin();
+  await searchParams;
+  const channels = await prisma.channel.findMany({
+    orderBy: { id: "asc" },
+    select: { id: true, name: true, provider: true, enabled: true, rate: true, payMin: true, payMax: true, config: true, code: true, product: true, typeId: true, updatedAt: true, createdAt: true },
+  });
+
+  return (
+    <AdminShell title="支付通道" description="维护通道配置">
+      {searchParams.then(p => p.saved) ? (
+        <div className="mb-4 rounded-lg bg-green-50 dark:bg-green-900/20 p-3 text-green-700 dark:text-green-200 text-sm">
+          通道配置已保存。
+        </div>
+      ) : null}
+
+      <div className="grid gap-4 xl:grid-cols-2">
+        {channels.map((channel) => (
+          <ChannelForm key={channel.id} channel={channel} />
+        ))}
+      </div>
+    </AdminShell>
+  );
+}
+
+function ChannelForm({ channel }: { channel: ChannelRow }) {
+  const config = (channel.config || {}) as Record<string, unknown>;
+  const provider = channel.provider;
+  const products = productOptions[provider];
+
+  return (
+    <Card className="overflow-hidden rounded-xl">
+      <CardHeader className="border-b border-border/60 bg-muted/30 p-4">
+        <div className="flex items-start justify-between">
+          <div>
+            <CardTitle className="text-base">{channel.name}</CardTitle>
+            <p className="text-xs text-muted-foreground">{provider} / #{channel.id}</p>
+          </div>
+          <Badge variant={channel.enabled ? "default" : "secondary"}>{channel.enabled ? "启用" : "停用"}</Badge>
+        </div>
+      </CardHeader>
+      <CardContent className="p-4">
+        <form className="grid gap-4" method="post" action="/api/admin/channels">
+          <input type="hidden" name="id" value={channel.id} />
+          <div className="flex items-center gap-2">
+            <input type="checkbox" name="enabled" defaultChecked={channel.enabled} className="h-4 w-4 rounded" />
+            <Label className="mb-0">启用当前通道</Label>
+          </div>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">通道名称</Label>
+              <Input id="name" name="name" defaultValue={channel.name} />
+            </div>
+            <div className="grid gap-2">
+              <Label>支付产品</Label>
+              <select name="product" defaultValue={channel.product}>
+                {products.map((item) => (
+                  <option key={item.value} value={item.value}>{item.label}</option>
+                ))}
+              </select>
+            </div>
+            <ChannelFields provider={provider} config={config} />
+          </div>
+          <button type="submit" className="rounded-xl bg-primary px-4 py-2 text-sm text-primary-foreground hover:opacity-90">
+            保存通道配置
+          </button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
 
 const productOptions = {
   ALIPAY: [
@@ -33,91 +112,37 @@ const productOptions = {
   ],
 } as const;
 
-export default async function ChannelsPage({ searchParams }: { searchParams: Promise<{ saved?: string; error?: string }> }) {
-  await requireAdmin();
-  await searchParams;
-  const channels = await prisma.channel.findMany({ include: { type: true }, orderBy: { id: "asc" } });
-
-  return (
-    <AdminShell title="支付通道" description="维护官方通道产品和商户参数；是否可用只由“启用当前通道”控制。">
-      <UrlToast successParam={["saved", "success"]} successMessages={{ "1": "通道配置已保存。" }} errorMessages={{ "1": "保存失败：参数错误。" }} defaultError="保存失败：参数错误。" />
-
-      <section className="grid gap-6 xl:grid-cols-2">
-        {channels.map((channel) => <ChannelForm key={channel.id} channel={channel} />)}
-      </section>
-    </AdminShell>
-  );
-}
-
-function ChannelForm({ channel }: { channel: ChannelWithType }) {
-  const config = (channel.config || {}) as ChannelConfig;
-  const provider = channel.provider;
-  const products = productOptions[provider];
-
-  return (
-    <Card className="washi-strong overflow-hidden rounded-3xl">
-      <CardHeader className="border-b border-border/60 bg-muted/30 backdrop-blur">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <CardTitle>{channel.name}</CardTitle>
-            <CardDescription>{channel.type.name} / {provider} / #{channel.id}</CardDescription>
-          </div>
-          <Badge variant={channel.enabled ? "default" : "secondary"}>{channel.enabled ? "启用" : "停用"}</Badge>
-        </div>
-      </CardHeader>
-      <CardContent className="p-5">
-        <form className="grid gap-5" method="post" action="/api/admin/channels">
-          <input type="hidden" name="id" value={channel.id} />
-          <FormSwitch name="enabled" label="启用当前通道" defaultChecked={channel.enabled} />
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field name="name" label="通道名称" defaultValue={channel.name} />
-            <div className="grid gap-2">
-              <Label>支付产品</Label>
-              <Select name="product" defaultValue={channel.product}>
-                <SelectTrigger className="w-full"><SelectValue placeholder="选择支付产品" /></SelectTrigger>
-                <SelectContent>{products.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
-              </Select>
-            </div>
-          </div>
-          <Separator />
-          {provider === ChannelProvider.ALIPAY ? <AlipayFields config={config} /> : <WechatFields config={config} />}
-          <SubmitButton className="w-full sm:w-fit" pendingText="保存中...">保存通道配置</SubmitButton>
-        </form>
-      </CardContent>
-    </Card>
-  );
-}
-
-function AlipayFields({ config }: { config: ChannelConfig }) {
-  return (
-    <div className="grid gap-4">
-      <Field name="appId" label="支付宝 App ID" defaultValue={String(config.appId || "")} />
-      <TextField name="privateKey" label="应用私钥 privateKey" defaultValue={String(config.privateKey || "")} />
-      <TextField name="alipayPublicKey" label="支付宝公钥 alipayPublicKey" defaultValue={String(config.alipayPublicKey || "")} />
-      <p className="rounded-2xl border border-border/60 bg-muted/25 p-3 text-xs text-muted-foreground backdrop-blur">支付宝网关固定使用生产环境 https://openapi.alipay.com/gateway.do，无需手动配置。</p>
-    </div>
-  );
-}
-
-function WechatFields({ config }: { config: ChannelConfig }) {
-  return (
-    <div className="grid gap-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field name="appId" label="微信 App ID" defaultValue={String(config.appId || "")} />
-        <Field name="mchId" label="商户号 mchId" defaultValue={String(config.mchId || "")} />
-        <Field name="apiV3Key" label="APIv3 密钥" defaultValue={String(config.apiV3Key || "")} />
-        <Field name="merchantSerialNo" label="商户证书序列号" defaultValue={String(config.merchantSerialNo || "")} />
+function ChannelFields({ provider, config }: { provider: ChannelProvider; config: Record<string, unknown> }) {
+  if (provider === ChannelProvider.ALIPAY) {
+    return (
+      <div className="grid gap-2">
+        <Field name="appId" label="支付宝 App ID" value={String(config.appId || "")} />
+        <Field name="privateKey" label="应用私钥 privateKey" value={String(config.privateKey || "")} isTextarea />
+        <Field name="alipayPublicKey" label="支付宝公钥" value={String(config.alipayPublicKey || "")} isTextarea />
       </div>
-      <TextField name="merchantPrivateKey" label="商户私钥 merchantPrivateKey" defaultValue={String(config.merchantPrivateKey || "")} />
-      <TextField name="platformCertificate" label="平台证书 platformCertificate" defaultValue={String(config.platformCertificate || "")} />
+    );
+  }
+  return (
+    <div className="grid gap-2">
+      <Field name="appId" label="微信 App ID" value={String(config.appId || "")} />
+      <Field name="mchId" label="商户号 mchId" value={String(config.mchId || "")} />
+      <Field name="apiV3Key" label="APIv3 密钥" value={String(config.apiV3Key || "")} isTextarea />
+      <Field name="merchantSerialNo" label="商户证书序列号" value={String(config.merchantSerialNo || "")} />
+      <Field name="merchantPrivateKey" label="商户私钥" value={String(config.merchantPrivateKey || "")} isTextarea />
+      <Field name="platformCertificate" label="平台证书" value={String(config.platformCertificate || "")} isTextarea />
     </div>
   );
 }
 
-function Field({ name, label, defaultValue }: { name: string; label: string; defaultValue?: string }) {
-  return <div className="grid gap-2"><Label htmlFor={name}>{label}</Label><Input id={name} name={name} defaultValue={defaultValue || ""} /></div>;
-}
-
-function TextField({ name, label, defaultValue }: { name: string; label: string; defaultValue?: string }) {
-  return <div className="grid gap-2"><Label htmlFor={name}>{label}</Label><Textarea id={name} name={name} defaultValue={defaultValue || ""} className="min-h-32 font-mono text-xs" /></div>;
+function Field({ name, label, value, isTextarea = false }: { name: string; label: string; value: string; isTextarea?: boolean }) {
+  return (
+    <div className="grid gap-2">
+      <Label htmlFor={name}>{label}</Label>
+      {isTextarea ? (
+        <textarea id={name} name={name} defaultValue={value || ""} className="min-h-20 font-mono text-xs rounded border px-2 py-1" />
+      ) : (
+        <Input id={name} name={name} defaultValue={value || ""} />
+      )}
+    </div>
+  );
 }

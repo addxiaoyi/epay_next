@@ -17,17 +17,17 @@ export default async function TestPayPage({ searchParams }: { searchParams: Prom
 
   return (
     <PublicShell>
-      <section className="relative isolate h-full w-full overflow-hidden px-4 py-4 md:px-8 lg:px-12">
+      <section className="h-full w-full overflow-hidden px-4 py-4 md:px-8 lg:px-12">
         <UrlToast errorMessages={{ "1": "测试支付发起失败。" }} defaultError="测试支付发起失败。" />
 
         <div className="grid h-full w-full items-center gap-4 lg:grid-cols-[.86fr_1.14fr]">
-          <div className="fade-up hidden min-h-0 flex-col justify-center text-center lg:flex lg:text-left">
-            <Badge variant="secondary" className="w-fit rounded-full border border-border/60 bg-background/60 px-4 py-1.5 backdrop-blur">
+          <div className="hidden min-h-0 flex-col justify-center text-center lg:flex lg:text-left">
+            <Badge variant="secondary" className="w-fit rounded-full border border-border/60 bg-background px-4 py-1.5">
               <Sparkles className="mr-1 size-3.5 text-primary" />
               Sandbox checkout
             </Badge>
-            <h1 className="mt-5 max-w-2xl text-5xl font-semibold leading-tight tracking-tight xl:text-6xl">
-              <span className="text-gradient">发起一笔优雅的测试支付</span>
+            <h1 className="mt-5 max-w-2xl text-4xl font-semibold xl:text-5xl">
+              发起一笔优雅的测试支付
             </h1>
             <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground">
               模拟真实商户请求，自动签名并进入兼容 `/submit.php` 的收银流程。
@@ -39,18 +39,16 @@ export default async function TestPayPage({ searchParams }: { searchParams: Prom
             </div>
           </div>
 
-          <div className="relative mx-auto flex h-full w-full max-w-2xl items-center">
-            <div className="absolute -left-10 top-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl" />
-            <div className="absolute -right-8 bottom-8 h-44 w-44 rounded-full bg-accent/10 blur-3xl" />
-            <Card className="washi-strong relative w-full overflow-hidden rounded-[2rem] ring-glow">
+          <div className="mx-auto flex h-full w-full max-w-2xl items-center">
+            <Card className="washi-strong w-full rounded-2xl">
               <CardContent className="p-4 sm:p-5 md:p-6">
-                <div className="rounded-[1.5rem] border border-border/60 bg-background/45 p-4 backdrop-blur sm:p-5">
+                <div className="rounded-xl border border-border/60 bg-background p-4 sm:p-5">
                   <div className="mb-4 flex items-center justify-between gap-4 sm:mb-5">
                     <div>
                       <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-primary sm:text-xs">Test Order</p>
-                      <h2 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">测试订单</h2>
+                      <h2 className="mt-1 text-2xl font-semibold sm:text-3xl">测试订单</h2>
                     </div>
-                    <span className="grid size-11 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-sm sm:size-12">
+                    <span className="grid size-11 place-items-center rounded-2xl bg-primary text-primary-foreground sm:size-12">
                       <CreditCard className="size-6" />
                     </span>
                   </div>
@@ -58,11 +56,11 @@ export default async function TestPayPage({ searchParams }: { searchParams: Prom
                   <form className="grid gap-3 sm:gap-4" method="post" action="/api/test-pay">
                     <div className="grid gap-1.5">
                       <Label htmlFor="name">商品名称</Label>
-                      <Input id="name" name="name" defaultValue="测试商品" className="h-11 rounded-2xl bg-background/70" />
+                      <Input id="name" name="name" defaultValue="测试商品" className="h-11 rounded-2xl" />
                     </div>
                     <div className="grid gap-1.5">
                       <Label htmlFor="money">支付金额</Label>
-                      <Input id="money" name="money" defaultValue="0.01" inputMode="decimal" className="h-12 rounded-2xl bg-background/70 text-2xl font-semibold" />
+                      <Input id="money" name="money" defaultValue="0.01" inputMode="decimal" className="h-12 rounded-2xl text-2xl font-semibold" />
                     </div>
                     <div className="grid gap-1.5">
                       <Label>支付通道</Label>

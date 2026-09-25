@@ -83,10 +83,10 @@ export function PaymentStatusPoller({
   return (
     <div
       className={cn(
-        "mt-3 rounded-2xl border p-3 text-left text-sm backdrop-blur sm:mt-4",
-        paid && "border-emerald-200 bg-emerald-50/85 text-emerald-950",
+        "mt-3 rounded-2xl border p-3 text-left text-sm sm:mt-4",
+        paid && "border-emerald-200 bg-emerald-50 text-emerald-950",
         closed && "border-destructive/20 bg-destructive/10 text-destructive",
-        !paid && !closed && "border-border/70 bg-background/60 text-foreground",
+        !paid && !closed && "border-border bg-background text-foreground",
       )}
     >
       <div className="flex items-start gap-3">
@@ -119,7 +119,7 @@ export function PaymentStatusPoller({
               </Button>
             ) : null}
             {!paid ? (
-              <Button size="sm" variant="outline" className="h-8 rounded-full bg-background/60" loading={checking} onClick={() => void checkStatus()}>
+              <Button size="sm" variant="outline" className="h-8 rounded-full" loading={checking} onClick={() => void checkStatus()}>
                 {!checking ? <RotateCcw className="size-3.5" /> : null}
                 手动检测
               </Button>

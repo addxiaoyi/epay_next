@@ -67,7 +67,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
     : undefined;
 
   return (
-    <main className="relative min-h-svh overflow-hidden bg-[#f8f3ec]">
+    <main className="min-h-svh bg-background">
       <UrlToast
         successParam={["sent", "success"]}
         successMessages={successMessages}
@@ -75,34 +75,29 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         defaultError="登录校验失败。"
       />
 
-      <section className="absolute inset-y-0 left-0 hidden w-[58%] lg:block">
-        <div className="absolute inset-0" style={backgroundStyle} />
-      </section>
-
-      <section className="relative z-10 grid min-h-svh lg:grid-cols-2">
-        <div className="relative hidden h-full flex-col justify-between p-10 text-white lg:flex">
-          <LoadingLink href="/" className="flex items-center gap-3 text-sm font-semibold">
-            <span className="rounded-full bg-white/15 px-3 py-1 text-xs">后台管理</span>
+      <div className="grid min-h-svh lg:grid-cols-2">
+        <div className="hidden h-full flex-col justify-between p-6 lg:flex">
+          <LoadingLink href="/" className="flex items-center gap-2 text-sm font-semibold">
+            <span className="rounded-full bg-primary px-3 py-1 text-xs text-primary-foreground">后台管理</span>
             Next 易支付
           </LoadingLink>
-          <div className="max-w-lg pb-10">
-            <span className="rounded-full bg-white/15 px-3 py-1 text-xs">Admin · 内部入口</span>
-            <h1 className="mt-5 text-4xl font-semibold tracking-tight">统一管理订单、通道与系统配置</h1>
-            <p className="mt-4 text-sm leading-7 text-white/75">仅供授权管理员访问，用于处理收款订单、支付通道、通知回调和安全登录配置。</p>
+          <div className="max-w-md pb-8">
+            <h1 className="text-2xl font-semibold">统一管理订单、通道与系统配置</h1>
+            <p className="mt-2 text-sm text-muted-foreground">仅供授权管理员访问，用于处理收款订单、支付通道、通知回调和安全登录配置。</p>
           </div>
         </div>
 
-        <section className="flex items-center justify-center px-5 py-10">
+        <div className="flex items-center justify-center p-4">
           <div className="w-full max-w-sm">
-            <div className="mb-4">
-              <h1 className="text-xl font-semibold tracking-tight">管理员登录</h1>
+            <div className="mb-3">
+              <h1 className="text-xl font-semibold">管理员登录</h1>
               <p className="mt-1 text-sm text-muted-foreground">输入凭证进入后台控制台</p>
             </div>
 
             <div>
               {multipleModes ? (
                 <Tabs defaultValue={defaultMode}>
-                  <TabsList className="mb-5 grid w-full" style={{ gridTemplateColumns: `repeat(${modes.length}, minmax(0, 1fr))` }}>
+                  <TabsList className="mb-4 grid w-full" style={{ gridTemplateColumns: `repeat(${modes.length}, minmax(0, 1fr))` }}>
                     {modes.includes("password") ? (
                       <TabsTrigger value="password">
                         <KeyRound className="size-4" />
@@ -146,11 +141,11 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               ) : (
                 <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="password" />
               )}
-              <p className="mt-4 text-center text-xs text-muted-foreground">登录即进入后台管理，仅用于系统管理员。</p>
+              <p className="mt-3 text-center text-xs text-muted-foreground">登录即进入后台管理，仅用于系统管理员。</p>
             </div>
           </div>
-        </section>
-      </section>
+        </div>
+      </div>
     </main>
   );
 }
