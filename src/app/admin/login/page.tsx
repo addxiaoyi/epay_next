@@ -129,15 +129,15 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
                     </TabsContent>
                   ) : null}
                   {modes.includes("totp") ? (
-                    <TabsContent value="totp">
-                      <LoginForm captchaEnabled={captchaEnabled} totpEnabled mode="totp" />
-                    </TabsContent>
-                  ) : null}
+                      <TabsContent value="totp">
+                        <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="totp" />
+                      </TabsContent>
+                    ) : null}
                 </Tabs>
               ) : defaultMode === "mail" ? (
                 <MailLoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled && !mailOnly} />
               ) : defaultMode === "totp" ? (
-                <LoginForm captchaEnabled={captchaEnabled} totpEnabled mode="totp" />
+                <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="totp" />
               ) : (
                 <LoginForm captchaEnabled={captchaEnabled} totpEnabled={totpEnabled} mode="password" />
               )}
