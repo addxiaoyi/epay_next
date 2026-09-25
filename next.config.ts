@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/pay";
 
 const nextConfig: NextConfig = {
   basePath,
@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
         destination: `/test-pay`,
       },
       {
+        source: `${basePath}/pay/start/:tradeNo`,
+        destination: `/pay/start/:tradeNo`,
+      },
+      {
         source: `${basePath}/admin/login`,
         destination: `/admin/login`,
       },
@@ -31,10 +35,6 @@ const nextConfig: NextConfig = {
       {
         source: `${basePath}/api/:path*`,
         destination: `/api/:path*`,
-      },
-      {
-        source: `${basePath}/pay/start/:tradeNo`,
-        destination: `/pay/start/:tradeNo`,
       },
     ];
   },

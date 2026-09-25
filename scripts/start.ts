@@ -52,14 +52,30 @@ function ensureEnv() {
 ensureEnv();
 
 const mode = process.argv[2] === 'start' ? 'start' : 'dev';
-const nextBin = resolve(process.cwd(), 'node_modules', '.bin', process.platform === 'win32' ? 'next.cmd' : 'next');
-const command = existsSync(nextBin) ? nextBin : 'next';
-const args = [mode, '-p', process.env.PORT || '3000'];
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+const standaloneDir = resolve(process.cwd(), '.next', 'standalone');
 
-const result = spawnSync(command, args, {
-  stdio: 'inherit',
-  shell: process.platform === 'win32',
-  env: process.env,
-});
+// standalone 模式下使用 node .next/standalone/server.js
+const standaloneExists = existsSync(standaloneDir);
+let result: number | null = null;
 
-process.exit(result.status ?? 1);
+if (mode === 'start' && standaloneExists) {
+  const serverPath = resolve(standaloneDir, 'server.js');
+  const args = ['node', serverPath, '-p', process.env.PORT || '3000'];
+  result = spawnSync(args[0], args.slice(1), {
+    stdio: 'inherit',
+    shell: process.platform === 'win32',
+    env: process.env,
+  }).status ?? 1;
+} else {
+  const nextBin = resolve(process.cwd(), 'node_modules', '.bin', process.platform === 'win32' ? 'next.cmd' : 'next');
+  const command = existsSync(nextBin) ? nextBin : 'next';
+  const args = [mode, '-p', process.env.PORT || '3000'];
+  result = spawnSync(command, args, {
+    stdio: 'inherit',
+    shell: process.platform === 'win32',
+    env: process.env,
+  }).status ?? 1;
+}
+
+process.exit(result ?? 1);
